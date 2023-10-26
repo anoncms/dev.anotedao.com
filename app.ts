@@ -371,7 +371,7 @@ class Wallet {
             decimalsInt = parseInt(decimals?.toString());
         }
         var quantity = $("#quantity").val();
-        if (quantity != undefined && decimalsInt != 0) {
+        if (quantity != undefined) {
             quantityInt = parseInt(quantity?.toString()) * (10 ** decimalsInt);
         }
         var description = $("#tokenDescription").val();
@@ -388,6 +388,8 @@ class Wallet {
         } else {
             try {
                 const tokenData = { name: name, decimals: decimalsInt, quantity: quantityInt, reissuable: reissuable, description: description };
+
+                console.log(tokenData);
 
                 const [tx] = await this.signer
                 .issue(tokenData)
