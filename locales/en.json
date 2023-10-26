@@ -120,7 +120,8 @@
     },
     "send": {
       "notEnough": "You don't have enough on your account, the fee is 0.001 Anotes.",
-      "bothRequired": "Both fields are required."
+      "bothRequired": "Both fields are required.",
+      "allRequired": "All fields are required."
     },
     "exchange": {
       "currenciesSame": "Currencies can't be same.",
