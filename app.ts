@@ -419,32 +419,45 @@ class Wallet {
     }
 
     async nodeLease() {
-        try {
-            const [tx] = await this.signer.invoke({
-                dApp: "3AVTze8bR1SqqMKv3uLedrnqCuWpdU7GZwX",
-                call: { function: "leaseToNode", args: [{type: 'string', value: "3AEDbSc69ZZ2ok3BqgTEvzQX7MjnmhZHjBM"}, {type: 'string', value: "3AShXVgRcRis82CwD7o9pz1Ac9vmRYMqELT"}] },
-                fee: 500000,
-                payment: [{
-                    assetId: 'auiheGJjoLj6B41v6GChAeCzEUaj2UDFu5rDqbfNHew',
-                    amount: 1,
-                }],
-            }).broadcast();
-    
-            $("#leaseSuccess").fadeIn(function(){
-                setTimeout(function(){
-                    $("#leaseSuccess").fadeOut(function() {
-                        // $("#listtokens").hide();
-                        // $("#notokens").show();
-                    });
-                }, 2000);
-            });
-        } catch(e: any) {
-            $("#leaseError").html(e.message);
+        var oa = $("#ownerAddress").val();
+        var na = $("#nodeAddress").val();
+
+        if (oa?.toString().length == 0 || na?.toString().length == 0) {
+            $("#leaseError").html(t.send.bothRequired);
             $("#leaseError").fadeIn(function(){
                 setTimeout(function(){
                     $("#leaseError").fadeOut();
-                }, 2000);
+                }, 500);
             });
+            navigator.vibrate(500);
+        } else {
+            try {
+                const [tx] = await this.signer.invoke({
+                    dApp: "3AVTze8bR1SqqMKv3uLedrnqCuWpdU7GZwX",
+                    call: { function: "leaseToNode", args: [{type: 'string', value: na}, {type: 'string', value: oa}] },
+                    fee: 500000,
+                    payment: [{
+                        assetId: 'auiheGJjoLj6B41v6GChAeCzEUaj2UDFu5rDqbfNHew',
+                        amount: 1,
+                    }],
+                }).broadcast();
+        
+                $("#leaseSuccess").fadeIn(function(){
+                    setTimeout(function(){
+                        $("#leaseSuccess").fadeOut(function() {
+                            // $("#listtokens").hide();
+                            // $("#notokens").show();
+                        });
+                    }, 2000);
+                });
+            } catch(e: any) {
+                $("#leaseError").html(e.message);
+                $("#leaseError").fadeIn(function(){
+                    setTimeout(function(){
+                        $("#leaseError").fadeOut();
+                    }, 2000);
+                });
+            }
         }
     }
 
